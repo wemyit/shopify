@@ -1,0 +1,13 @@
+angular.module('application').directive('productParams', function() {
+  return {
+    restrict: 'AE',
+    scope: {
+      productId: '@product',
+      line: '@line',
+      quantity: '=quantity',
+      special: '=special'
+    },
+    templateUrl: '{{ 'angular.product-params.html' | asset_url }}',
+    controller: 'ProductParamsController'
+  }
+});

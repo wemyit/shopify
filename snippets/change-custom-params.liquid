@@ -1,0 +1,14 @@
+{% capture name %}{{ product.title | downcase }}{% endcapture %}
+{% if product.type == 'course' and name contains "special course" %}
+<script>
+// <![CDATA[
+$(document).ready(function(){
+  angular.element(document).injector().get('ProductParamsRepo')
+  .updateProperties('{{ item.key }}', {{ item.properties | json }});
+});
+// ]]>
+</script>
+ <product-params product="{{ item.key }}" line="{{ line }}" quantity="{{ quantity }}" special="true"></product-params>
+{% else %}
+  <product-params product="{{ item.key }}" line="{{ line }}" quantity="{{ quantity }}" special="false"></product-params>
+{% endif %}

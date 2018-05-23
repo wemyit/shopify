@@ -1,0 +1,7 @@
+<!-- snippets/featured-product.liquid -->
+{% assign product = all_products[settings.home_featured_single_product] %}
+{% unless product.empty? %}
+  {% include 'single-product' %}
+{% else %}
+  {% include 'blank-single-product' %}
+{% endunless %}

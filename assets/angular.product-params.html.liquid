@@ -1,0 +1,47 @@
+<div ng-form name="customParams">
+  <div ng-show="special">
+    <p>
+      <label>{{ 'special_questions.EU' | t }}
+        <input ng-change="updated()" type="checkbox"
+        ng-model="properties.eu[1]"
+        ng-true-value="'Yes'"
+        ng-false-value="'No'">
+      </label>
+    </p>
+    <div ng-hide="fromEU()">
+      <p>
+        <label>{{ 'special_questions.Arrival' | t }}
+          <input ng-change="updated()" type="text" ng-required="!fromEU()" ng-model="properties.arrival[1]">
+        </label>
+      </p>
+      <p>
+        <label>{{ 'special_questions.Passport' | t }}
+          <input ng-change="updated()" type="text" ng-required="!fromEU()" ng-model="properties.passport[1]">
+        </label>
+      </p>
+    </div>
+    <p>
+      <label>{{ 'special_questions.Gift' | t }}
+        <input ng-change="updated()" type="checkbox"
+        ng-model="properties.gift[1]"
+        ng-true-value="'Yes'"
+        ng-false-value="'No'">
+      </label>
+    </p>
+    <div ng-show="isGift()">
+      <p>
+        <label>{{ 'special_questions.Receiver' | t }}
+          <input ng-change="updated()" type="text" ng-required="isGift()" ng-model="properties.receiver[1]">
+        </label>
+      </p>
+    </div>
+  </div>
+  <div>
+    <label>{{ 'cart.label.quantity' | t }}
+      <input ng-change="updated()" type="number" string-to-number ng-model="quantity" min="0">
+    </label>
+  </div>
+  <div ng-show="updateNeeded && (customParams.$valid || !special)">
+    <input ng-click="updateProperties($event)" type="submit" class="btn-secondary update-cart" value="{{ 'cart.general.update_item' | t }}">
+  </div>
+</div>

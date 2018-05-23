@@ -1,0 +1,13 @@
+<div class="grid--full">
+  <ul class="grid-item one-whole">
+
+    {% for i in (1..2) %}
+    {% capture photo_img %}photo_{{ i }}.jpg{% endcapture %}
+    <li class="grid-item one-half center">
+      <a href="/">
+        {{ photo_img | asset_img_url: '150x150' | img_tag: i }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

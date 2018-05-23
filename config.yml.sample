@@ -1,0 +1,17 @@
+development:
+  theme_id:
+  password:
+  store:
+  bucket_size: 40
+  refill_rate: 2
+  ignore_files:
+  - "config.yml*"
+  - ".gitignore"
+  - ".idea/*"
+  - ".git/*"
+  - "*.iml"
+  - "*.png"
+  - "*.jpg"
+  - "*.jpeg"
+  - "*.gif"
+  - "config/*"

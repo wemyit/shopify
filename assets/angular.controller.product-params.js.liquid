@@ -1,0 +1,73 @@
+angular.module('application').controller('ProductParamsController', ['$http', '$window', '$scope', 'ProductParamsRepo',
+  function($http, $window, $scope, ProductParamsRepo) {
+
+  function getProperty(name, defaultValue) {
+    var result = _.find(properties, function (o) {return o[0] === name});
+    return(result ? result : [name, defaultValue] );
+  }
+
+  function checkProperty (property) {
+    return property[1] === 'Yes';
+  }
+
+  function init() {
+    $scope.properties = {
+      gift: getProperty('Gift', 'No'),
+      eu: getProperty('EU', 'No'),
+      arrival: getProperty('Arrival', ''),
+      passport: getProperty('Passport', ''),
+      receiver: getProperty('Receiver', '')
+    };
+    $scope.updateNeeded = false;
+  }
+
+  var properties = ProductParamsRepo.getProperties($scope.productId);
+  init();
+
+  $scope.isGift = function() {
+    return checkProperty($scope.properties.gift);
+  }
+
+  $scope.fromEU = function() {
+    return checkProperty($scope.properties.eu);
+  }
+
+  $scope.updated = function() {
+    $scope.updateNeeded = true;
+  }
+
+  $scope.updateProperties = function (event) {
+    event.preventDefault();
+    var preparedProperties = _.reduce($scope.properties, function(result, value, key){
+      result[value[0]] = value[1];
+      return result;
+    }, {});
+    data = {
+      id: $scope.productId,
+      line: $scope.line,
+      quantity: $scope.quantity
+    };
+    if($scope.special){
+      data['properties'] = preparedProperties;
+    }
+    $http.post('/cart/change.js', data).then(function(response){
+      try {
+        var updatedItem = response.data.items[(response.config.data.line - 1)];
+        $scope.quantity = updatedItem.quantity
+        var updatedProperties = _.reduce(updatedItem.properties,
+        function(result, value, key) {
+          var param = [key, value];
+          result.push(param);
+          return result;
+        }, []);
+        ProductParamsRepo.updateProperties($scope.productId, updatedProperties);
+        init();
+      } catch (e) {
+        console.error("Unable to do something");
+      }
+      $window.location.reload();
+    }, function(response){
+      console.error(response);
+    });
+  }
+}]);

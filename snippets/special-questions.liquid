@@ -1,0 +1,53 @@
+{% capture name %}{{ product.title | downcase }}{% endcapture %}
+
+{% if product.type == 'course' and name contains "special course" %}
+
+<script>
+  function watchChanges (checkboxId, fadeId, checked) {
+    $(checkboxId).change(function() {
+      var item = $(fadeId);
+      var inputs = $(fadeId + ' :input');
+      if(this.checked == checked) {
+        item.fadeOut('slow');
+        inputs.attr('required', null);
+      } else {
+        item.fadeIn('slow');
+        inputs.attr('required', true);
+      };
+    })
+  }
+  $(document).ready(function(){
+    watchChanges('#eu', '#eu-questions', true);
+    watchChanges('#gift', '#gift-questions', false);
+  });
+</script>
+
+  <div>
+    <p class="line-item-property__field">
+  	  <input type="hidden" name="properties[EU]" value="No">
+      <input id="eu" type="checkbox" name="properties[EU]" value="Yes">
+      <label for="eu">{{ 'special_questions.EU' | t }}</label>
+    </p>
+    <div id="eu-questions">
+      <p class="line-item-property__field">
+        <label for="arrival">{{ 'special_questions.Arrival' | t }}</label>
+        <input id="arrival" required type="text" name="properties[Arrival]">
+      </p>
+      <p class="line-item-property__field">
+        <label for="passport">{{ 'special_questions.Passport' | t }}</label>
+        <input id="passport" required type="text" name="properties[Passport]">
+      </p>
+    </div>
+    <p class="line-item-property__field">
+      <input type="hidden" name="properties[Gift]" value="No">
+      <input id="gift" type="checkbox" name="properties[Gift]" value="Yes">
+      <label for="gift">{{ 'special_questions.Gift' | t }}</label>
+    </p>
+    <div id="gift-questions" style="display: none;">
+      <p class="line-item-property__field">
+        <label for="receiver">{{ 'special_questions.Receiver' | t }}</label>
+        <input id="receiver" type="text" name="properties[Receiver]">
+      </p>
+    </div>
+  </div>
+{% endif %}
